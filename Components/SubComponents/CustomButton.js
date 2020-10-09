@@ -27,6 +27,26 @@ const styels = StyleSheet.create({
         marginBottom: 5,
         padding: 10,
     },
+    avatar: {
+        alignSelf: 'stretch',
+        backgroundColor: "white",
+        width: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 15,
+        borderBottomColor: 'gainsboro',
+        borderBottomWidth: 1
+    },
+    cancel: {
+        width: 220,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "white",
+        marginTop: 5,
+        marginBottom: 5,
+        padding: 10,
+    },
     settingTxt: {
         fontSize: 20
     },
