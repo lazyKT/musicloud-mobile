@@ -46,48 +46,48 @@ export default function App() {
   if (appReady) {
     return (
       <userContext.Provider value={{ signedIn, setSignedIn }}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {signedIn ? (
-            <>
-              {/* SignedIn: protected */}
-              <Stack.Screen
-                name="home"
-                component={Home}
-                options={{
-                  title: "Home",
-                }}
-              />
-            </>
-          ) : (
-            <>
-              {/* SignedOut: public */}
-              <Stack.Screen
-                name="login"
-                component={Login}
-                options={{
-                  title: "Login",
-                }}
-              />
-              <Stack.Screen
-                name="Register"
-                component={Register}
-                options={{
-                  title: "MusiCloud",
-                }}
-              />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </userContext.Provider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {signedIn ? (
+              <>
+                {/* SignedIn: protected */}
+                <Stack.Screen
+                  name="home"
+                  component={Home}
+                  options={{
+                    title: "Home",
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                {/* SignedOut: public */}
+                <Stack.Screen
+                  name="login"
+                  component={Login}
+                  options={{
+                    title: "Login",
+                  }}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={Register}
+                  options={{
+                    title: "MusiCloud",
+                  }}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </userContext.Provider>
     )
   }
   // while app is loading its setup 
   else {
     return (
       <AppLoading
-        startAsync={readTokens()}
+        startAsync={readTokens}
         onFinish={() => setAppReady(true)}
         onError={console.warn}
         />
