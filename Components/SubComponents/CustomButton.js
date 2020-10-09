@@ -20,6 +20,16 @@ const styels = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    setting: {
+        alignSelf: 'stretch',
+        backgroundColor: "white",
+        marginTop: 5,
+        marginBottom: 5,
+        padding: 10,
+    },
+    settingTxt: {
+        fontSize: 20
+    },
     btnTxt: {
         fontSize: 15
     }
@@ -38,7 +48,9 @@ function CustomButton(props) {
             onPress={handleOnClick} 
             activeOpacity='1' 
             underlayColor={'gray'}>
-            <Text style={styels.btnTxt}>{title}</Text>
+            <Text style={type === 'setting' ? styels.settingTxt : styels.btnTxt}>
+                {title}
+            </Text>
         </TouchableOpacity>
     )
 }

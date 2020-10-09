@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, AsyncStorage } from "react-native";
 import Input from "../SubComponents/Input";
 import CustomButton from "../SubComponents/CustomButton";
 import userContext from "../../Contexts/userContext";
@@ -23,15 +23,27 @@ function Login({ navigation }) {
   // destructuring data
   const { username, password } = data;
 
+
+  // store auth tokens in async storage
+  const storeData = async (value) => {
+    try {
+      const jsonData = JSON.stringify(value);
+      await AsyncStorage.setItem('@authToken', jsonData);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  
   // handling onChange Event of Input
   const handleInputOnChange = (key, value) => {
-    // console.log(key, value);
+  
     setData({
       ...data,
       [key]: value,
     });
-    // console.log('data onChange', data);
   };
+
 
   // handling onPress Event of CustomButtons
   // login
@@ -44,8 +56,14 @@ function Login({ navigation }) {
       return;
     }
 
-    console.log("data", data);
-    setSignedIn(true);
+    // console.log("data", data);
+
+    try {
+      storeData(data);
+      setSignedIn(true);
+    } catch(e) {
+      console.log('e', error);
+    }
   };
   // register
   const handleRegister = () => {

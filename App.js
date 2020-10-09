@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, AsyncStorage } from "react-native";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -8,6 +8,7 @@ import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 import userContext from "./Contexts/userContext";
 import Home from "./Components/Main/Home";
+import { AppLoading } from "expo";
 
 /** navigation container */
 const Stack = createStackNavigator();
@@ -15,12 +16,36 @@ const Stack = createStackNavigator();
 export default function App() {
   /** to determine if the user has signed in or not */
   const [signedIn, setSignedIn] = useState(false);
+  /**
+   * determining whether the app is read to load or not 
+   * When the app loads up for the first time, 
+   * it will search the necessary items in Async Storage.
+   * The idea is to run the App Loading Screen until the app's setup is finished.
+   * */
+  const [ appReady, setAppReady ] = useState(false);
 
-  /** Effects on user signed-in state */
-  useEffect(() => {}, [signedIn]);
 
-  return (
-    <userContext.Provider value={{ signedIn, setSignedIn }}>
+  /** checking authTokens from Async Storage */
+  const readTokens = async () => {
+    try {
+      const tokens = await AsyncStorage.getItem('@authToken');
+      console.log("Tokens", tokens);
+      if (tokens) {
+        setSignedIn(true);
+      } else {
+        setSignedIn(false);
+      }
+      //setAppReady(true);
+    } catch(e) {
+      console.log("Error", e);
+      setSignedIn(false);
+    }
+  }
+
+  // when the app is ready to load (aka) app's setup is finished
+  if (appReady) {
+    return (
+      <userContext.Provider value={{ signedIn, setSignedIn }}>
       <NavigationContainer>
         <Stack.Navigator>
           {signedIn ? (
@@ -56,7 +81,18 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </userContext.Provider>
-  );
+    )
+  }
+  // while app is loading its setup 
+  else {
+    return (
+      <AppLoading
+        startAsync={readTokens()}
+        onFinish={() => setAppReady(true)}
+        onError={console.warn}
+        />
+    )
+  }
 }
 
 const styles = StyleSheet.create({
