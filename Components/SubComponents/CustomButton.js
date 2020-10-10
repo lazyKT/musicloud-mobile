@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 /** styling for custom button component */
@@ -63,15 +64,15 @@ function CustomButton(props) {
 
     /** render */
     return(
-        <TouchableOpacity 
+        <TouchableHighlight 
             style={styels[type]} 
             onPress={handleOnClick} 
-            activeOpacity='1' 
-            underlayColor={'gray'}>
+            underlayColor="gainsboro"
+            activeOpacity={0.2}>
             <Text style={type === 'setting' ? styels.settingTxt : styels.btnTxt}>
                 {title}
             </Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
     )
 }
 

@@ -7,11 +7,18 @@ import EditAvatar from './EditAvatar';
 
 function Profile() {
 
+    // display modal ?
     const [ showModal, setShowModal ] = useState(false);
+    // avatar
+    const [ avatar, setAvatar ] = useState(null);
 
-    const hideModal = () => {
+    // get Avatar from gallery/photos
+    const getFromPhotos = (src) => {
+        setAvatar(src);
+        // hide modal after change
         setShowModal(false);
     }
+
 
     return(
         <View style={styles.profileContainer}>
@@ -21,7 +28,9 @@ function Profile() {
                 animationType="slide"
                 transparent={true}
                 visible={showModal}>
-                <EditAvatar cancelClick={hideModal}/>
+                <EditAvatar 
+                    cancelClick={() => setShowModal(false)}
+                    pickAvatar={getFromPhotos}/>
 
             </Modal>
 
@@ -36,9 +45,9 @@ function Profile() {
                 onPress={() => setShowModal(true)}>
                 <Image 
                     style={styles.avatar}
-                    source={{
+                    source={!avatar ? {
                         uri: 'https://randomwordgenerator.com/img/picture-generator/52e3d24a4c5ab10ff3d8992cc12c30771037dbf85254794e732878d49748_640.jpg'
-                    }}
+                    } : { uri: avatar}}
                     />
             </TouchableHighlight>
             

@@ -1,12 +1,18 @@
 /** Song Component */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 
-function Songs() {
+function Songs({ handleOnPress }) {
+
+    let dummy = 'Rain Drops Keep Falling on my head';
+
     return(
         <View style={styles.container}>
             <Text>Songs</Text>
+            <Pressable onPress={() => handleOnPress(dummy)}>
+            <Text>{dummy}</Text>
+            </Pressable>
         </View>
     )
 }
