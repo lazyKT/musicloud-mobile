@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Songs from './Songs/Songs';
 import Setting from './Setting/Setting'
 import Player from './Songs/Player';
+import CustomTabBar from '../SubComponents/CustomTabBar';
+import CustomHeader from '../SubComponents/CustomHeader';
 
 
 // create tab navigation
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 /** this is a home page that the user see after successfully logged in */
 function Home() {
@@ -23,31 +23,43 @@ function Home() {
         setSong(s);
     }
 
+    // return(
+    //     // Remember to set independent props to true if we wanna use Nested NavigationContainer
+    //     <NavigationContainer independent={true}>
+    //         <Tab.Navigator
+    //             tabBarOptions={{
+    //               activeTintColor: '#e91e63',
+    //               labelStyle: { fontSize: 12 },
+    //             }}
+    //             // screenOptions={}
+    //         >
+    //             <Tab.Screen 
+    //                 name="Songs"
+    //                 children={() => <Songs handleOnPress={getSong}/>}
+    //                 options={{ 
+    //                     headerTitle: props => <CustomHeader {...props}/>
+    //                 }}
+    //             />
+    //             <Tab.Screen 
+    //                 name="Settings" 
+    //                 component={Setting}
+    //                 options={{ headerTitle: props => <CustomHeader {...props} /> }}
+    //             />
+    //         </Tab.Navigator>
+    //         <Player song={song}/>
+    //     </NavigationContainer>
+    // )
     return(
-        // Remember to set independent props to true if we wanna use Nested NavigationContainer
         <NavigationContainer independent={true}>
             <Tab.Navigator
-                // tab icons
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ color, size }) => {
-                        let iconName = route.name === 'Songs'
-                            ? 'md-home' : 'ios-settings'
-                        
-                        // return icon component
-                        return <Ionicons name={iconName} size={size} color={color} />;
-                    },
-                })}
-                // active color
-                tabBarOptions={{
-                    activeTintColor: 'coral'
-                }}>
+                tabBar={props => <CustomTabBar {...props}/>}
+            >
                 <Tab.Screen 
-                    name="Songs"
+                    name="Home" 
                     children={() => <Songs handleOnPress={getSong}/>}
-                    />
+                />
                 <Tab.Screen name="Settings" component={Setting}/>
             </Tab.Navigator>
-            <Player song={song}/>
         </NavigationContainer>
     )
 }
