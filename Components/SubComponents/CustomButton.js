@@ -48,6 +48,13 @@ const styels = StyleSheet.create({
         marginBottom: 5,
         padding: 10,
     },
+    playlist: {
+        alignSelf: 'stretch',
+        backgroundColor: "white",
+        marginTop: 5,
+        marginBottom: 5,
+        padding: 10,
+    },
     settingTxt: {
         fontSize: 20
     },

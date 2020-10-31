@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { Modal } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Songs from './Songs/Songs';
+import songContext from '../../Contexts/songContext';
 import Setting from './Setting/Setting'
 import Player from './Songs/Player';
 import CustomTabBar from '../SubComponents/CustomTabBar';
-import CustomHeader from '../SubComponents/CustomHeader';
+import SongsMenu from './Songs/SongsMenu';
+import PlayingScrn from './Songs/PlayingScrn';
 
 
 // create tab navigation
@@ -16,51 +18,44 @@ const Tab = createMaterialTopTabNavigator();
 function Home() {
 
     // song name
-    const [song, setSong] = useState(null);
+    const [songs, setSongs] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
-    // get song from song list
-    const getSong = (s) => {
-        setSong(s);
+    const onPlayerPress = _ => {
+        console.log("Player Press");
+        setShowModal(true);
     }
 
-    // return(
-    //     // Remember to set independent props to true if we wanna use Nested NavigationContainer
-    //     <NavigationContainer independent={true}>
-    //         <Tab.Navigator
-    //             tabBarOptions={{
-    //               activeTintColor: '#e91e63',
-    //               labelStyle: { fontSize: 12 },
-    //             }}
-    //             // screenOptions={}
-    //         >
-    //             <Tab.Screen 
-    //                 name="Songs"
-    //                 children={() => <Songs handleOnPress={getSong}/>}
-    //                 options={{ 
-    //                     headerTitle: props => <CustomHeader {...props}/>
-    //                 }}
-    //             />
-    //             <Tab.Screen 
-    //                 name="Settings" 
-    //                 component={Setting}
-    //                 options={{ headerTitle: props => <CustomHeader {...props} /> }}
-    //             />
-    //         </Tab.Navigator>
-    //         <Player song={song}/>
-    //     </NavigationContainer>
-    // )
+    const hideModal = _ => {
+        console.log("Cancel ZClk");
+        setShowModal(false);
+    }
+
     return(
-        <NavigationContainer independent={true}>
-            <Tab.Navigator
-                tabBar={props => <CustomTabBar {...props}/>}
-            >
-                <Tab.Screen 
-                    name="Home" 
-                    children={() => <Songs handleOnPress={getSong}/>}
-                />
-                <Tab.Screen name="Settings" component={Setting}/>
-            </Tab.Navigator>
-        </NavigationContainer>
+        <songContext.Provider value={{songs, setSongs}}>
+            <NavigationContainer independent={true}>
+                <Tab.Navigator
+                    tabBar={props => <CustomTabBar {...props}/>}
+                >
+                    {/* <Tab.Screen 
+                        name="Home" 
+                        children={() => <Songs handleOnPress={getSong}/>}
+                    /> */}
+                    <Tab.Screen name="Songs" component={SongsMenu}/>
+                    <Tab.Screen name="Settings" component={Setting}/>
+                </Tab.Navigator>
+                
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showModal}>
+                    <PlayingScrn cancelClk={hideModal}/>
+                </Modal>
+
+                <Player onPress={onPlayerPress}/>
+
+            </NavigationContainer>
+        </songContext.Provider>
     )
 }
 

@@ -7,8 +7,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 import userContext from "./Contexts/userContext";
-import Home from "./Components/Main/Home";
 import { AppLoading } from "expo";
+import Home from "./Components/Main/Home";
 
 /** navigation container */
 const Stack = createStackNavigator();
@@ -52,7 +52,7 @@ export default function App() {
               <>
                 {/* SignedIn: protected */}
                 <Stack.Screen
-                  name="home"
+                  name="Home"
                   component={Home}
                   options={{
                     title: "Home",

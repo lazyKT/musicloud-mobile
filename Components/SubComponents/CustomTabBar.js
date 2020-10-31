@@ -56,11 +56,9 @@
 // export default CustomTabBar;
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import Animated, { exp } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
 
 function CustomTabBar({ state, descriptors, navigation, position }) {
-
-    const [active, setActive] = useState(false);
 
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -96,11 +94,6 @@ function CustomTabBar({ state, descriptors, navigation, position }) {
           });
         };
 
-        const inputRange = state.routes.map((_, i) => i);
-        const opacity = Animated.interpolate(position, {
-          inputRange,
-          outputRange: inputRange.map(i => (i === index ? 1 : 0)),
-        });
 
         return (
           <TouchableOpacity
@@ -110,7 +103,11 @@ function CustomTabBar({ state, descriptors, navigation, position }) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1, height: 60, alignItems: 'center', justifyContent: 'center'}}
+            style={
+              state.index === index
+              ? styles.active
+              : styles.in_active
+            }
           >
             <Text 
                 style={
@@ -119,8 +116,17 @@ function CustomTabBar({ state, descriptors, navigation, position }) {
                     : {color: 'gray'}
                 }
             >
-                {`${label}-${route.name}`}
+                {label}
             </Text>
+              
+            {
+              label === "Songs" 
+                ? <Ionicons name="md-home" size={24} 
+                color={state.index === index ? 'red' : 'gray'} />
+                : (<Ionicons name="md-settings" size={24} 
+                color={state.index === index ? 'red' : 'gray'} />)
+            }
+          
           </TouchableOpacity>
         );
       })}
@@ -138,6 +144,23 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
+    },
+    active: {
+      height: 60,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: 'white',
+      borderBottomColor: 'red'
+    },
+    in_active: {
+      height: 60,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#f9f9f9'
     }
 });
 
