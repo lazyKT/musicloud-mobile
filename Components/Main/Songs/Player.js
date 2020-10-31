@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -10,10 +10,13 @@ function Player({ onPress }) {
 
     const { songs } = useContext(songContext); 
 
+    const [ isPlaying, setIsPlaying ] = useState(false);
+
 
     /** Play Button Press */
     const playBtnPress = _ => {
         console.log("PLay Btn Pressed!");
+        setIsPlaying(!isPlaying);
     }
 
 
@@ -32,11 +35,17 @@ function Player({ onPress }) {
                     <Text style={styles.title}>{
                         songs && songs.current} 
                     </Text>
-                    <Text>Artist</Text>
+                    <Text>
+                        Artist
+                    </Text>
                 </Pressable>
 
                 {/** Play Button */}
-                <AntDesign name="playcircleo" size={40} color="black" onPress={playBtnPress}/>
+                {
+                    isPlaying 
+                    ? <AntDesign name="pausecircleo" size={40} color="black" onPress={playBtnPress}/>
+                    : <AntDesign name="playcircleo" size={40} color="black" onPress={playBtnPress}/>
+                }
             </View>
         </View>
     )

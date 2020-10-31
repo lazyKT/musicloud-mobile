@@ -136,15 +136,6 @@ function CustomTabBar({ state, descriptors, navigation, position }) {
 
 
 const styles = StyleSheet.create({
-    container: {
-        height: 70,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonContainer: {
-        flex: 1,
-    },
     active: {
       height: 60,
       flex: 1,
