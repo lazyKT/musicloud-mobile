@@ -37,13 +37,14 @@ function Input(props) {
             <Text style={styles.label}>{title}</Text>
             {/* error */}
             { error && 
-                <Text style={styles.error}>{`${name} must no be blank.*`}</Text>}
+                <Text style={styles.error}>{error}</Text>}
             {/* input */}
             <TextInput 
                 style={styles.input}
                 name={name}
                 value={value}
-                secureTextEntry={name === 'password'}
+                autoCapitalize = 'none'
+                secureTextEntry={name === 'password' || name === "c_pwd"}
                 onChange={ event => inputOnChange(name, event.nativeEvent.text)}
                 />
         </>

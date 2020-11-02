@@ -6,10 +6,12 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 /** styling for custom button component */
 const styels = StyleSheet.create({
     login: {
-        alignSelf: 'stretch', // similar with width: 100%
+        alignSelf: 'stretch',
         backgroundColor: "lightgreen",
-        margin: 10,
+        marginTop: 5,
+        marginBottom: 5,
         padding: 10,
+        width: 260,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -18,6 +20,7 @@ const styels = StyleSheet.create({
         backgroundColor: "coral",
         margin: 10,
         padding: 10,
+        width: 260,
         alignItems: 'center',
         justifyContent: 'center',
     },

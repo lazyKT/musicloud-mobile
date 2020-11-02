@@ -35,12 +35,8 @@ function Home() {
         <songContext.Provider value={{songs, setSongs}}>
             <NavigationContainer independent={true}>
                 <Tab.Navigator
-                    tabBar={props => <CustomTabBar {...props}/>}
+                    tabBar={(props, idx) => <CustomTabBar {...props} key={idx}/>}
                 >
-                    {/* <Tab.Screen 
-                        name="Home" 
-                        children={() => <Songs handleOnPress={getSong}/>}
-                    /> */}
                     <Tab.Screen name="Songs" component={SongsMenu}/>
                     <Tab.Screen name="Settings" component={Setting}/>
                 </Tab.Navigator>
