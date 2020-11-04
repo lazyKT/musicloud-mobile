@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Modal, AsyncStorage } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
 
-import { fetchAvatarRequest } from '../../NetworkRequests/users_requests';
+import { fetchAvatarRequest, updateUsernameRequest, getUserRequest } from '../../NetworkRequests/users_requests';
 import CustomDiv from '../../SubComponents/CustomDiv';
 import EditAvatar from './EditAvatar';
-import { acc } from 'react-native-reanimated';
+import CustomButton from '../../SubComponents/CustomButton';
+import useAsyncStorage from '../../CustomHooks/useAsyncStorage';
 
 
 function Profile() {
 
+    // fetch from AsyncStorage
+    const { token, loaded } = useAsyncStorage();
     // user data from async storage
     const [ data, setData ] = useState(null);
     // user avatar url
@@ -18,6 +21,8 @@ function Profile() {
     const [ showModal, setShowModal ] = useState(false);
     // avatar
     const [ avatar, setAvatar ] = useState(null);
+    // editing username
+    const [ editing, setEditing ] = useState(false);
 
 
     // get Avatar from gallery/photos
@@ -27,32 +32,12 @@ function Profile() {
         setShowModal(false);
     }
 
-
-    // get user details from persistant storage
-    const getDataFromStorage = async _ => {
-
-        try {
-            const data = await AsyncStorage.getItem('@authToken');
-
-            if (data != null) {
-    
-                const json = await JSON.parse(data);
-                // console.log(json, json.id, json.username);
-                setData(json);
-            }
-
-        } catch (error) {
-            console.log("Error Fetching Data from Async Storage!");
-        }
-    };
-
     // fetch user avatar
-    const fetchAvatar = async (id, access_token) => {
+    const fetchAvatar = async (id, access_token, signal) => {
 
         try {
-            const request = await fetchAvatarRequest(id, access_token);
+            const request = await fetchAvatarRequest(id, access_token, signal);
 
-            console.log("request", request);
             if (request === 200) 
                 setAvatarUrl(`http://127.0.0.1:5000/avatar/${id}`);
 
@@ -61,17 +46,79 @@ function Profile() {
         }
     }
 
+    // fetch user details
+    const fetchUserDetails = async (id, access_token, signal) => {
+
+        try {
+            const request = await getUserRequest(id, access_token, signal);
+
+            const { response, status } = request;
+
+            console.log("data before response", data);
+            
+            if (status === 200) {
+                setData(response);
+            }
+
+        } catch (error) {
+            console.log("Error Fetching userDetails", error);
+        }
+    }
+
+    // edit username
+    const editUsername = _ => {
+        setEditing(true)
+    }
+
+
+    // cancel edit username
+    const cancelEditing = _ => {
+        setEditing(false);
+    }
+
+    // update username
+    const updateUsername = async val => {
+
+        console.log("Update Username ", data);
+
+        try {
+           const request = await updateUsernameRequest(data, token.access_token, val);
+
+            if (request === 200) {
+
+                setData({
+                    ...data,
+                    username: val
+                })
+
+                // updateAsyncStorage();
+                console.log("username updated!!");
+
+                setEditing(false);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
-        getDataFromStorage();
-    }, []);
+
+        const abortController = new AbortController();
+
+        if (loaded) {
+            const { access_token, id } = token;
+            fetchAvatar( id, access_token, abortController.signal );
+            fetchUserDetails( id, access_token, abortController.signal );
+        }
 
 
-    useEffect(() => {
-        
-        if (data) fetchAvatar(data.id, data.access_token);
+        // clean up
+        return () => {
+            abortController.abort();
+        }
 
-    }, [data])
+    }, [loaded]);
 
 
     return(
@@ -104,17 +151,22 @@ function Profile() {
                     } : { uri: avatar}}
                     />
             </TouchableHighlight>
-            
+
             <CustomDiv 
                 title="Username"
                 content={data ? data.username : " - - "}
                 type="profile"
+                editing={editing}
+                onPress={editUsername}
+                cancelEdit={cancelEditing}
+                update={updateUsername}
                 />
 
             <CustomDiv 
                 title="Email"
-                content={data ? data.email : " - - "}
+                content={loaded ? token.email : " - - "}
                 type="profile"
+                editing={false}
                 />
 
         </View>
@@ -150,6 +202,8 @@ const styles = StyleSheet.create({
         padding: 10,
         width: 70,
         height: 70
+    },
+    usernameDiv: {
     }
 })
 

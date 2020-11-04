@@ -55,31 +55,31 @@ export const loginRequest = async ({ username, password }) => {
 
 
 // get-user-detail request by id with access-token
-export const getUserRequest = async (id, access_token) => {
+export const getUserRequest = async (id, access_token, signal) => {
 
     try {
-        let request = await fetch(`http://127.0.0.1:5000/${id}`, {
+        let request = await fetch(`http://127.0.0.1:5000/user/${id}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
                 'Content-type' : 'application/json',
                 'Authorization' : `Bearer ${access_token}`
             },
+            signal
         });
 
         let status = request.status;
-        let data = await request.json();
+        let response = await request.json();
 
-        console.log(json, status);
-        return { data, status };
+        return { response, status };
     } catch (error) {
-
+        console.log("Error : ", error);
     }
 }
 
 
 // fetch-user-avatar request
-export const fetchAvatarRequest = async (id, access_token) => {
+export const fetchAvatarRequest = async (id, access_token, signal) => {
 
     try {
 
@@ -87,7 +87,8 @@ export const fetchAvatarRequest = async (id, access_token) => {
             method: 'GET',
             headers: {
                 'Authorization' : `Bearer ${access_token}`
-            }
+            },
+            signal
         });
 
         const status = request.status;
@@ -99,3 +100,34 @@ export const fetchAvatarRequest = async (id, access_token) => {
     } 
 }
 
+
+// update username request
+export const updateUsernameRequest = async ({ id, email }, access_token, username) => {
+
+    console.log("id", id, "username", username);
+
+    try {
+        const request = await fetch(`http:127.0.0.1:5000/user/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-type' : 'application/json',
+                'Authorization' : `Bearer ${access_token}`
+            },
+            body: JSON.stringify({
+                username,
+                email
+            })
+        });
+
+        const status = request.status;
+
+        console.log(status);
+
+        return status;
+
+    } catch (error) {
+        console.log("error : ",error);
+        return error;
+    }
+}

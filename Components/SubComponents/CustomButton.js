@@ -4,7 +4,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 /** styling for custom button component */
-const styels = StyleSheet.create({
+const styles = StyleSheet.create({
     login: {
         alignSelf: 'stretch',
         backgroundColor: "lightgreen",
@@ -58,6 +58,24 @@ const styels = StyleSheet.create({
         marginBottom: 5,
         padding: 10,
     },
+    save: {
+        padding: 2,
+        paddingLeft: 20,
+        alignSelf: 'flex-end'
+    },
+    cancelEdit: {
+        padding: 2,
+        paddingLeft: 20,
+        alignSelf: 'flex-end'
+    },
+    saveTxt: {
+        color: 'green',
+        textDecorationLine: 'underline'
+    },
+    cancelTxt: {
+        color: 'gray',
+        textDecorationLine: 'underline'
+    },
     settingTxt: {
         fontSize: 20
     },
@@ -75,11 +93,17 @@ function CustomButton(props) {
     /** render */
     return(
         <TouchableHighlight 
-            style={styels[type]} 
+            style={styles[type]} 
             onPress={handleOnClick} 
             underlayColor="gainsboro"
             activeOpacity={0.2}>
-            <Text style={type === 'setting' ? styels.settingTxt : styels.btnTxt}>
+            <Text 
+                style={
+                    type === 'setting' ? styles.settingTxt 
+                    : type === 'save' ? styles.saveTxt 
+                    : type === 'cancelEdit' ? styles.cancelTxt 
+                    : styles.btnTxt
+                    }>
                 {title}
             </Text>
         </TouchableHighlight>

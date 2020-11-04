@@ -54,6 +54,7 @@ function CustomTabBar({ state, descriptors, navigation, position }) {
               ? styles.active
               : styles.in_active
             }
+            key={index}
           >
             <Text 
                 style={
