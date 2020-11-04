@@ -1,14 +1,17 @@
-import React, { useRef } from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 /** styling for custom button component */
-const styels = StyleSheet.create({
+const styles = StyleSheet.create({
     login: {
-        alignSelf: 'stretch', // similar with width: 100%
+        alignSelf: 'stretch',
         backgroundColor: "lightgreen",
-        margin: 10,
+        marginTop: 5,
+        marginBottom: 5,
         padding: 10,
+        width: 260,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -17,6 +20,7 @@ const styels = StyleSheet.create({
         backgroundColor: "coral",
         margin: 10,
         padding: 10,
+        width: 260,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -47,6 +51,31 @@ const styels = StyleSheet.create({
         marginBottom: 5,
         padding: 10,
     },
+    playlist: {
+        alignSelf: 'stretch',
+        backgroundColor: "white",
+        marginTop: 5,
+        marginBottom: 5,
+        padding: 10,
+    },
+    save: {
+        padding: 2,
+        paddingLeft: 20,
+        alignSelf: 'flex-end'
+    },
+    cancelEdit: {
+        padding: 2,
+        paddingLeft: 20,
+        alignSelf: 'flex-end'
+    },
+    saveTxt: {
+        color: 'green',
+        textDecorationLine: 'underline'
+    },
+    cancelTxt: {
+        color: 'gray',
+        textDecorationLine: 'underline'
+    },
     settingTxt: {
         fontSize: 20
     },
@@ -63,15 +92,21 @@ function CustomButton(props) {
 
     /** render */
     return(
-        <TouchableOpacity 
-            style={styels[type]} 
+        <TouchableHighlight 
+            style={styles[type]} 
             onPress={handleOnClick} 
-            activeOpacity='1' 
-            underlayColor={'gray'}>
-            <Text style={type === 'setting' ? styels.settingTxt : styels.btnTxt}>
+            underlayColor="gainsboro"
+            activeOpacity={0.2}>
+            <Text 
+                style={
+                    type === 'setting' ? styles.settingTxt 
+                    : type === 'save' ? styles.saveTxt 
+                    : type === 'cancelEdit' ? styles.cancelTxt 
+                    : styles.btnTxt
+                    }>
                 {title}
             </Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
     )
 }
 

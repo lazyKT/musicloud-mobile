@@ -3,22 +3,28 @@ import { View, Text, StyleSheet, AsyncStorage } from "react-native";
 import Input from "../SubComponents/Input";
 import CustomButton from "../SubComponents/CustomButton";
 import userContext from "../../Contexts/userContext";
+import { loginRequest } from "../NetworkRequests/users_requests";
 
 /** Login Component */
 function Login({ navigation }) {
 
     // context for auth flow
-    const { signedIn, setSignedIn } = useContext(userContext);
+  const { setSignedIn } = useContext(userContext);
 
   // login data
   const [data, setData] = useState({
     username: "",
     password: "",
   });
+
+  const [ loginTxt, setLoginTxt ] = useState("Login");
+  // login response message
+  const [ msg, setMsg ] = useState(null);
+
   // validate input: username
-  const [usrError, setUsrError] = useState(false);
+  const [usrError, setUsrError] = useState(null);
   // validate input: password
-  const [pwdError, setPwdError] = useState(false);
+  const [pwdError, setPwdError] = useState(null);
 
   // destructuring data
   const { username, password } = data;
@@ -47,34 +53,53 @@ function Login({ navigation }) {
 
   // handling onPress Event of CustomButtons
   // login
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // check for empty text input
     if (!username || !password) {
-      username ? setUsrError(false) : setUsrError(true);
-      password ? setPwdError(false) : setPwdError(true);
+      username ? setUsrError(null) : setUsrError("Username must not be blank!");
+      password ? setPwdError(null) : setPwdError("Password must not be blank!");
 
       return;
     }
 
-    // console.log("data", data);
-
     try {
-      storeData(data);
-      setSignedIn(true);
+      const request = await loginRequest(data);
+
+      setLoginTxt("Loading ...");
+
+      if (request.status === 200) {
+        
+        setLoginTxt("Login");
+        setMsg(null);
+
+        storeData(request.data);
+        setSignedIn(true);
+
+      } else {
+        setMsg("Username (or) password is incorrect!");
+        setLoginTxt("Login");
+      }
+      
     } catch(e) {
       console.log('e', error);
     }
   };
+
+
   // register
   const handleRegister = () => {
     navigation.navigate("Register");
   };
 
+  /* rendering */
   return (
     <View style={styles.container}>
       <View style={styles.form}>
         {/* Title */}
         <Text style={styles.title}>Welcome to MusiCloud</Text>
+
+        {/* Login Response Message */}
+        <Text style={styles.msg}>{ msg && msg }</Text>
 
         {/* Username or Email Input */}
         <Input
@@ -95,7 +120,11 @@ function Login({ navigation }) {
         />
 
         {/* Login Button */}
-        <CustomButton title="Login" type="login" handleOnClick={handleLogin} />
+        <CustomButton 
+          title={loginTxt}
+          type="login" 
+          handleOnClick={handleLogin} 
+        />
         <CustomButton
           title="Register"
           type="register"
@@ -126,6 +155,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
+  msg: {
+    color: 'red'
+  }
 });
 
 export default Login;
