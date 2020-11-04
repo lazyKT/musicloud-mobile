@@ -10,7 +10,24 @@ import SongCard from './SongCard';
 function Songs({ route }) {
 
     /** Dummy Song Data */
-    const dummySongs = ["Nostalgia", "Thee Khan", "33", "Set Fire to the Rain"];
+    const dummySongs = [
+        {
+            name: "Nostalgia",
+            artist: "Big Bag"
+        },
+        {
+            name: "33",
+            artist: "Big Bag"
+        },
+        {
+            name: "Thee Khan",
+            artist: "Big Bag"
+        },
+        {
+            name: "Blackbirds",
+            artist: "Linkin Park"
+        },
+    ];
 
     const { setSongs } = useContext(songContext);
 
@@ -34,7 +51,9 @@ function Songs({ route }) {
             <View style={styles.songContainer}>
                 {
                     dummySongs.map( (song, idx) =>
-                        <SongCard name={song} key={idx} onPress={_ => onSongPress(song)} />
+                        <SongCard 
+                            name={song.name} artist={song.artist} key={idx} 
+                            onPress={_ => onSongPress(song)} />
                     )
                 }
             </View>

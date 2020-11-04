@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Pressable, Text } from 'react-native';
 
 
-function SongCard({ name, onPress }) {
+function SongCard({ name, artist, onPress }) {
 
 
     // useEffect(() => {
@@ -15,6 +15,7 @@ function SongCard({ name, onPress }) {
     return (
         <Pressable style={styles.card} onPress={onPress}>
             <Text>{ name }</Text>
+            <Text>{ artist }</Text>
         </Pressable>
     )    
 }
