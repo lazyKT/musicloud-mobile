@@ -5,6 +5,9 @@
  */
 import React from 'react';
 
-const songContext = React.createContext(null);
+const songContext = React.createContext({
+    all: [],
+    current : null
+});
 
 export default songContext;

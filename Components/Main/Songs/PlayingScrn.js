@@ -29,10 +29,10 @@ function PlayingScrn({ cancelClk }) {
 
                 {/** Song Info Div */}
                 <Text style={styles.songTitle}>
-                    { songs ? songs.current : "No Song" }
+                    { (songs && songs.current) ? songs.current.title : "-- --" }
                 </Text>
                 <Text>
-                    Artist
+                    { songs && songs.current && "user" }
                 </Text>
 
                 {/** Player Controls */}

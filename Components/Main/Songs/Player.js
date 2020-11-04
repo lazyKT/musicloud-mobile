@@ -15,13 +15,12 @@ function Player({ onPress }) {
 
     /** Play Button Press */
     const playBtnPress = _ => {
-        console.log("PLay Btn Pressed!");
         setIsPlaying(!isPlaying);
     }
 
 
     useEffect(() => {
-        console.log("player", songs);
+        // console.log("player", songs);
     },[songs]);
 
     return (
@@ -30,17 +29,21 @@ function Player({ onPress }) {
                 {/** song title and artist */}
                 <Pressable 
                     style={styles.info}
-                    onPress={onPress}
+                    onPress={ () => { 
+                            if (songs && songs.current)
+                                onPress();
+                        }
+                    }
                     >
-                    <Text style={styles.title}>{
-                        songs && songs.current} 
+                    <Text style={styles.title}>
+                        { (songs && songs.current) ? songs.current.title : "-- --"} 
                     </Text>
                     <Text>
-                        Artist
+                        { (songs && songs.current) && "user" }
                     </Text>
                 </Pressable>
 
-                {/** Play Button */}
+                {/*  Play Button */}
                 {
                     isPlaying 
                     ? <AntDesign name="pausecircleo" size={40} color="black" onPress={playBtnPress}/>

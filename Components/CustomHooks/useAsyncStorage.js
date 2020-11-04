@@ -1,12 +1,12 @@
 import { AsyncStorage } from "react-native";
 import { useEffect, useState } from "react";
 
-const useAsyncStorage = unMount => {
+const useAsyncStorage = () => {
 
     const [ data, setData ] = useState({ token: null, loaded: false });
 
     // fetch data from AsyncStorage
-    const fetchData = async () => {
+    const fetchData = async (unMount) => {
 
         try {
             const item = await AsyncStorage.getItem('@authToken');
