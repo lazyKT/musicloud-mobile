@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import songContext from '../../../Contexts/songContext';
-
+import { FontAwesome } from '@expo/vector-icons';
 import PlayerControls from './PlayerControls';
 
 
@@ -20,12 +20,12 @@ function PlayingScrn({ cancelClk }) {
                 <Text>Back</Text>
             </Pressable>
             <View style={styles.container}>
-                <Image
-                    source={{
-                        uri: 'https://cdn.pixabay.com/photo/2020/06/08/20/22/human-5276040_1280.jpg',
-                      }}
-                    style={{ height: 300, width: 350}}
-                />
+
+                <View
+                    style={styles.songImg}
+                >
+                    <FontAwesome name="music" size={25} color="black" />
+                </View>
 
                 {/** Song Info Div */}
                 <Text style={styles.songTitle}>
@@ -65,8 +65,12 @@ const styles = StyleSheet.create({
     },
     songImg: {
         height: 300,
-        width: 350,
-        padding: 10
+        width: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'coral',
+        marginTop: -100
+
     },
     player: {
         height: 80,

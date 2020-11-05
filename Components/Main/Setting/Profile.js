@@ -79,8 +79,6 @@ function Profile() {
     // update username
     const updateUsername = async val => {
 
-        console.log("Update Username ", data);
-
         try {
            const request = await updateUsernameRequest(data, token.access_token, val);
 

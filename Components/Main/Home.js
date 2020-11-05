@@ -21,14 +21,8 @@ function Home() {
     const [songs, setSongs] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    const onPlayerPress = _ => {
-        console.log("Player Press");
-        setShowModal(true);
-    }
-
-    const hideModal = _ => {
-        console.log("Cancel ZClk");
-        setShowModal(false);
+    const togglePlayingScreen = _ => {
+        setShowModal(!showModal);
     }
 
     return(
@@ -45,10 +39,10 @@ function Home() {
                     animationType="slide"
                     transparent={true}
                     visible={showModal}>
-                    <PlayingScrn cancelClk={hideModal}/>
+                    <PlayingScrn cancelClk={togglePlayingScreen}/>
                 </Modal>
 
-                <Player onPress={onPlayerPress}/>
+                <Player onPress={togglePlayingScreen}/>
 
             </NavigationContainer>
         </songContext.Provider>
